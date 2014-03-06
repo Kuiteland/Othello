@@ -41,7 +41,12 @@ public class Board extends JFrame{
 		hasTurn = inBoard.hasTurn;
 		noTurn = inBoard.noTurn;
 		turn = inBoard.turn;
-		board = inBoard.board;
+		for(int i = 0;i<COL;i++){
+			for(int j = 0;j<ROWS;j++){
+				board[j][i] = inBoard.board[j][i];
+			}
+		}
+
 	}
 	
 	public void mouseClick(int x, int y){
