@@ -12,8 +12,5 @@ Zetten worden simpelweg door te klikken op het boord gezet,
 het rode vakje biedt de mogelijkheid de beurt te passen. 
 Hoewel dit in het officiele spel alleen mag als er geen mogelijke zetten zijn.
 
-De computer zet op dit moment de eerste legale zet die het vindt.
-
-
-Othello.java bevat ook het begin voor het Alpha Beta algorhitme
-dit compiled nog niet maar is misschien wel intressant om te bekijken.
+De computer gebruikt alpha beta pruning om zijn zetten te bepalen,
+hoewel de enige heuristiek op dit moment het aantal stenen is.
