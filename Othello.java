@@ -8,9 +8,6 @@ import java.lang.Math;
 import java.util.*;
 
 /*
-Graag een opmerking over het gebruiken van een Thread hier
-is dat nodig of zijn er betere manieren om dit uit te voeren
-verder is invulling zodat alles werkt
 alle game mechanics staan in Board.java
 */
 
