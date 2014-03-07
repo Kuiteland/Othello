@@ -46,7 +46,6 @@ public class Board extends JFrame{
 				board[j][i] = inBoard.board[j][i];
 			}
 		}
-
 	}
 	
 	public void mouseClick(int x, int y){
@@ -164,8 +163,70 @@ public class Board extends JFrame{
 	// hieronder enkele methods voor scoring en wincondition
 	// worden nog niet gebruikt
 	public int score(char color){
-		return count(color);
+		int score = count(color);
+		if(board[0][0] == color)
+			score -= 10;
+		if(board[7][7] == color)
+			score -= 10;
+		if(board[0][7] == color)
+			score -= 10;
+		if(board[7][0] == color)
+			score -= 10;
+		score -= cSquares(color);
+		score -= xSquares(color);
+		return score;
 	}
+	
+	private int cSquares(char color){
+		int score = 0;
+		if(!(board[0][0] == color)){
+			if(board[0][1] == color)
+				score -= 5;
+			if(board[1][0] == color)
+				score -= 5;
+		}
+		if(!(board[0][7] == color)){
+			if(board[0][6] == color)
+				score -= 5;
+			if(board[1][7] == color)
+				score -= 5;
+		}
+		if(!(board[7][0] == color)){
+			if(board[7][1] == color)
+				score -= 5;
+			if(board[6][0] == color)
+				score -= 5;
+		}
+		if(!(board[7][7] == color)){
+			if(board[7][6] == color)
+				score -= 5;
+			if(board[6][7] == color)
+				score -=5;
+		}
+		return score;
+	}
+	
+	private int xSquares(char color){
+		int score = 0;
+		if(!(board[0][0] == color)){
+			if(board[1][1] == color)
+				score -= 10;
+		}
+		if(!(board[7][0] == color)){
+			if(board[6][1] == color)
+				score -= 10;
+		}
+		if(!(board[0][7] == color)){
+			if(board[1][6] == color)
+				score -= 10;
+		}
+		if(!(board[7][7] == color)){
+			if(board[6][6] == color)
+				score -= 10;
+		}
+		return score;
+	}
+			
 	
 	public int count(char color){
 		int count = 0;
