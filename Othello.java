@@ -16,7 +16,6 @@ public class Othello {
 	private Board mainBoard;
 	private char human;
 	private char computer;
-	private boolean flag;
 	private boolean compFlag = false;
 	
 	public Othello(){
@@ -31,13 +30,15 @@ public class Othello {
 
 	public static void main(String[] args){
 		Othello game = new Othello();
+		
 		if(args.length>0){
 			if(args[0].equals("c"))
 				game.compFlag = true;
 		}
+				
+		//deze while loop kan een stuk beter georganiseerd
 		while(!game.mainBoard.endGame()){
 			if(game.mainBoard.hasTurn == game.human && game.compFlag){
-				game.flag = true;
 				int[] move = game.bestMove(game.mainBoard, 1, false);
 				if(move != null){
                     System.out.printf("%d, %d",move[0],move[1]);
@@ -48,8 +49,8 @@ public class Othello {
 				}
 				game.mainBoard.repaint();
 			}
+			
 			if(game.mainBoard.hasTurn == game.computer){
-				game.flag = false;
 				int[] move = game.bestMove(game.mainBoard, 6, true);
 				if(move != null){
                     System.out.printf("%d, %d",move[0],move[1]);
@@ -60,9 +61,11 @@ public class Othello {
 				}
 				game.mainBoard.repaint();
 			}
+			
 			try{Thread.sleep(100);}
 			catch(Exception e){System.out.println(e.toString());}
 		}
+		
 		if(game.mainBoard.win(game.computer))
 			System.out.println(game.computer);
 		else
@@ -70,7 +73,7 @@ public class Othello {
 	}
 	
     private int[] bestMove(Board mainBoard, int depth, boolean computer) {
-        int a = -1000;
+        int a = -10000;
         int anew;
         int[] bestMove = null;
 
