@@ -36,10 +36,9 @@ public class Othello {
 				game.compFlag = true;
 		}
 				
-		//deze while loop kan een stuk beter georganiseerd
 		while(!game.mainBoard.endGame()){
-			if(game.mainBoard.hasTurn == game.human && game.compFlag){
-				int[] move = game.bestMove(game.mainBoard, 1, false);
+			if(game.compFlag && game.mainBoard.hasTurn == game.human){
+				int[] move = game.bestMove(game.mainBoard, 6, false);
 				if(move != null){
                     System.out.printf("%d, %d",move[0],move[1]);
 					game.mainBoard.put(move[0],move[1]);
