@@ -14,6 +14,7 @@ public class Board extends JFrame{
 	private static final int SIDE = 100;
 	private static final int ROWS = 8;
 	private static final int COL = 8;
+	private char parity;
 	char hasTurn;
 	char noTurn;
 	int turn;
@@ -30,7 +31,7 @@ public class Board extends JFrame{
 		setVisible(true);
 		getContentPane().setBackground(Color.GREEN);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		parity = 'w';
 		hasTurn = 'b';
 		noTurn = 'w';
 		turn = 1;
@@ -41,6 +42,7 @@ public class Board extends JFrame{
 		hasTurn = inBoard.hasTurn;
 		noTurn = inBoard.noTurn;
 		turn = inBoard.turn;
+		parity = inBoard.parity;
 		for(int i = 0;i<COL;i++){
 			for(int j = 0;j<ROWS;j++){
 				board[j][i] = inBoard.board[j][i];
@@ -73,6 +75,11 @@ public class Board extends JFrame{
 			pass();
 		}
 	}
+	public void pass(boolean b){
+		if (b==true) flipParity();
+		pass();
+	}
+	
 	public void pass(){
 		char placeholder;
 		placeholder = hasTurn;
@@ -160,10 +167,15 @@ public class Board extends JFrame{
 		return positions;
 	}
 	
+	public void flipParity() {
+		parity = getAnti(parity);
+	}
+	
 	// hieronder enkele methods voor scoring en wincondition
 	// worden nog niet gebruikt
 	public int score(char color){
 		int score = count(color);
+		
 		if(board[0][0] == color)
 			score -= 10;
 		if(board[7][7] == color)
@@ -172,8 +184,12 @@ public class Board extends JFrame{
 			score -= 10;
 		if(board[7][0] == color)
 			score -= 10;
+		
 		score -= cSquares(color);
 		score -= xSquares(color);
+		
+		if (parity == color) score++;
+		
 		return score;
 	}
 	

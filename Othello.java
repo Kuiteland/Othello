@@ -44,7 +44,7 @@ public class Othello {
 					game.mainBoard.put(move[0],move[1]);
                     try{Thread.sleep(100);}catch(Exception e){System.out.println(e.toString());}
 				}else{
-					game.mainBoard.pass();
+					game.mainBoard.pass(true);
 				}
 				game.mainBoard.repaint();
 			}
@@ -56,7 +56,7 @@ public class Othello {
 					game.mainBoard.put(move[0],move[1]);
                     try{Thread.sleep(100);}catch(Exception e){System.out.println(e.toString());}
 				}else{
-					game.mainBoard.pass();
+					game.mainBoard.pass(true);
 				}
 				game.mainBoard.repaint();
 			}
@@ -132,14 +132,14 @@ public class Othello {
             }
         }else if(computer) {
             Board nextBoard = new Board(mainBoard);
-            nextBoard.pass();
+            nextBoard.pass(true);
 
             a = Math.max(a, alphabeta(nextBoard, depth-1, a, b, false));
 
             return a;
         }else {
             Board nextBoard = new Board(mainBoard);
-            nextBoard.pass();
+            nextBoard.pass(true);
 
             b = Math.min(b, alphabeta(board,depth-1, a, b, true));
 
