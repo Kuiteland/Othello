@@ -35,7 +35,7 @@ public class Othello {
 			if(args[0].equals("c"))
 				game.compFlag = true;
 		}
-				
+
 		while(!game.mainBoard.endGame()){
 			if(game.compFlag && game.mainBoard.hasTurn == game.human){
 				int[] move = game.bestMove(game.mainBoard, 6, false);
@@ -50,7 +50,7 @@ public class Othello {
 			}
 			
 			if(game.mainBoard.hasTurn == game.computer){
-				int[] move = game.bestMove(game.mainBoard, 6, true);
+				int[] move = game.bestMove(game.mainBoard, 5, true);
 				if(move != null){
                     System.out.printf("%d, %d",move[0],move[1]);
 					game.mainBoard.put(move[0],move[1]);
@@ -76,7 +76,7 @@ public class Othello {
         int anew;
         int[] bestMove = null;
 
-        if(depth <= 0 || mainBoard.endGame()) {
+        if(mainBoard.endGame()) {
             return null;
         }
         
@@ -88,11 +88,10 @@ public class Othello {
                 nextBoard.put(nextmove);
 
                 anew = alphabeta(nextBoard, depth-1, a, 1000, computer);
-                if(a < anew) {
+                if(anew > a) {
                     bestMove = nextmove;
+					a = anew;
                 }
-
-                a = Math.max(a, anew);
             }
             return bestMove;
         }else return null;

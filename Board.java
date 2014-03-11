@@ -177,16 +177,16 @@ public class Board extends JFrame{
 		int score = count(color);
 		
 		if(board[0][0] == color)
-			score -= 10;
+			score += 10;
 		if(board[7][7] == color)
-			score -= 10;
+			score += 10;
 		if(board[0][7] == color)
-			score -= 10;
+			score += 10;
 		if(board[7][0] == color)
-			score -= 10;
+			score += 10;
 		
-		score -= cSquares(color);
-		score -= xSquares(color);
+		score += cSquares(color);
+		score += xSquares(color);
 		
 		if (parity == color) score++;
 		
