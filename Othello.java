@@ -106,10 +106,11 @@ public class Othello {
         }
         
         ArrayList<int[]> nextmoves = board.legalPositions();
+		
         if(!nextmoves.isEmpty()){
             if(computer) {
                 for(int[] nextmove : nextmoves) {
-                    Board nextBoard = new Board(mainBoard);
+                    Board nextBoard = new Board(board);
                     nextBoard.put(nextmove);
 
                     a = Math.max(a, alphabeta(nextBoard, depth-1, a, b, false));
@@ -120,10 +121,10 @@ public class Othello {
                 return a;
             }else {
                 for(int[] nextmove : nextmoves) {
-                    Board nextBoard = new Board(mainBoard);
+                    Board nextBoard = new Board(board);
                     nextBoard.put(nextmove);
 
-                    b = Math.min(b, alphabeta(board,depth-1, a, b, true));
+                    b = Math.min(b, alphabeta(nextBoard,depth-1, a, b, true));
                     if(b<a) {
                         break;
                     }
@@ -131,17 +132,17 @@ public class Othello {
                 return b;
             }
         }else if(computer) {
-            Board nextBoard = new Board(mainBoard);
+            Board nextBoard = new Board(board);
             nextBoard.pass(true);
 
             a = Math.max(a, alphabeta(nextBoard, depth-1, a, b, false));
 
             return a;
         }else {
-            Board nextBoard = new Board(mainBoard);
+            Board nextBoard = new Board(board);
             nextBoard.pass(true);
 
-            b = Math.min(b, alphabeta(board,depth-1, a, b, true));
+            b = Math.min(b, alphabeta(nextBoard,depth-1, a, b, true));
 
             return b;
         }
