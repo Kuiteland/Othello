@@ -15,6 +15,7 @@ public class Board extends JFrame{
 	private static final int ROWS = 8;
 	private static final int COL = 8;
 	private char parity;
+	int passes;
 	char hasTurn;
 	char noTurn;
 	int turn;
@@ -31,6 +32,7 @@ public class Board extends JFrame{
 		setVisible(true);
 		getContentPane().setBackground(Color.GREEN);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		passes = 0;
 		parity = 'w';
 		hasTurn = 'b';
 		noTurn = 'w';
@@ -43,6 +45,8 @@ public class Board extends JFrame{
 		noTurn = inBoard.noTurn;
 		turn = inBoard.turn;
 		parity = inBoard.parity;
+		passes = inBoard.passes;
+		
 		for(int i = 0;i<COL;i++){
 			for(int j = 0;j<ROWS;j++){
 				board[j][i] = inBoard.board[j][i];
@@ -60,7 +64,7 @@ public class Board extends JFrame{
 		}
 		else if((x>= WID + SIDE/2 - WID/16 && x <WID + SIDE/2 + WID/16) && (
 				y >= 2*HI/3 && y < 2*HI/3 + WID/8)){
-			pass();
+			pass(true);
 		}
 		repaint();
 	}
@@ -76,7 +80,10 @@ public class Board extends JFrame{
 		}
 	}
 	public void pass(boolean b){
-		if (b==true) flipParity();
+		if (b==true){
+			flipParity();
+			passes++;
+		}
 		pass();
 	}
 	
@@ -187,7 +194,7 @@ public class Board extends JFrame{
 	}
 	private int sides(char color) {
 		int score = 0;
-		int sidevalue = 1;
+		int sidevalue = 4;
 		
 		for(int i=0; i < 8; i++) {
 			if (board[i][0] == color)
@@ -205,7 +212,7 @@ public class Board extends JFrame{
 	
 	private int corners(char color) {
 		int score = 0;
-		int cornervalue = 10;
+		int cornervalue = 20;
 		
 		if(board[0][0] == color)
 			score += cornervalue;
@@ -221,7 +228,7 @@ public class Board extends JFrame{
 	
 	private int cSquares(char color){
 		int score = 0;
-		int cvalue = -10;
+		int cvalue = -5;
 		
 		if(!(board[0][0] == color)){
 			if(board[0][1] == color)
@@ -252,7 +259,7 @@ public class Board extends JFrame{
 	
 	private int xSquares(char color){
 		int score = 0;
-		int xvalue = -10;
+		int xvalue = -5;
 		
 		if(!(board[0][0] == color)){
 			if(board[1][1] == color)
@@ -297,7 +304,7 @@ public class Board extends JFrame{
 	}
 	
 	public boolean endGame(){
-		if(win(hasTurn) || win(noTurn)){
+		if(passes == 2 || win(hasTurn) || win(noTurn)){
 			return true;
 		}
 		return false;

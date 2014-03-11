@@ -47,14 +47,17 @@ public class Othello {
 			try{
 				deptHuman = Integer.parseInt(args[1]);
 				deptComp = Integer.parseInt(args[2]);
+				if(deptHuman <= 0 || deptComp <= 0){
+					deptHuman = 5;
+					deptComp = 5;
+				}
 			}catch(Exception e){System.out.println(e.toString());}
 		}
 
-
-
-		while(!game.mainBoard.endGame()){
+		while(!game.mainBoard.endGame() && game.mainBoard.passes < 2){
+			game.mainBoard.passes = 0;
 			if(game.compFlag && game.mainBoard.hasTurn == game.human){
-				int[] move = game.bestMove(game.mainBoard, deptHuman, false);
+				int[] move = game.bestMove(game.mainBoard, deptHuman, game.human);
 				if(move != null){
                     System.out.printf("%d, %d",move[0],move[1]);
 					game.mainBoard.put(move[0],move[1]);
@@ -66,7 +69,7 @@ public class Othello {
 			}
 			
 			if(game.mainBoard.hasTurn == game.computer){
-				int[] move = game.bestMove(game.mainBoard, deptComp, true);
+				int[] move = game.bestMove(game.mainBoard, deptComp, game.computer);
 				if(move != null){
                     System.out.printf("%d, %d",move[0],move[1]);
 					game.mainBoard.put(move[0],move[1]);
@@ -81,21 +84,17 @@ public class Othello {
 			catch(Exception e){System.out.println(e.toString());}
 		}
 		
-		if(game.mainBoard.win(game.computer))
+		if(game.mainBoard.count(game.computer)>game.mainBoard.count(game.human))
 			System.out.println(game.computer);
 		else
 			System.out.println(game.human);
 	}
 	
-    private int[] bestMove(Board mainBoard, int depth, boolean computer) {
-        int a = -10000;
+    private int[] bestMove(Board mainBoard, int depth, char player) {
+        int a = -1000;
         int anew;
         int[] bestMove = null;
 
-        if(mainBoard.endGame()) {
-            return null;
-        }
-        
         ArrayList<int[]> nextmoves = mainBoard.legalPositions();
 
         if (!nextmoves.isEmpty()) {        
@@ -103,7 +102,7 @@ public class Othello {
                 Board nextBoard = new Board(mainBoard);
                 nextBoard.put(nextmove);
 
-                anew = alphabeta(nextBoard, depth-1, a, 1000, computer);
+                anew = alphabeta(nextBoard, depth-1, a, 1000, false, player);
                 if(anew > a) {
                     bestMove = nextmove;
 					a = anew;
@@ -113,11 +112,9 @@ public class Othello {
         }else return null;
     }
 
-    private int alphabeta(Board board, int depth, int a, int b, boolean computer) {
+    private int alphabeta(Board board, int depth, int a, int b, boolean computer, char player) {
         if(depth == 0 || board.endGame()) {
-			if(!computer)
-				return board.score(this.computer);
-            return board.score(this.human);
+			return board.score(player);
         }
         
         ArrayList<int[]> nextmoves = board.legalPositions();
@@ -128,7 +125,7 @@ public class Othello {
                     Board nextBoard = new Board(board);
                     nextBoard.put(nextmove);
 
-                    a = Math.max(a, alphabeta(nextBoard, depth-1, a, b, false));
+                    a = Math.max(a, alphabeta(nextBoard, depth-1, a, b, false, player));
                     if(b<a) {
                         break;
                     }
@@ -139,7 +136,7 @@ public class Othello {
                     Board nextBoard = new Board(board);
                     nextBoard.put(nextmove);
 
-                    b = Math.min(b, alphabeta(nextBoard,depth-1, a, b, true));
+                    b = Math.min(b, alphabeta(nextBoard,depth-1, a, b, true, player));
                     if(b<a) {
                         break;
                     }
@@ -150,14 +147,14 @@ public class Othello {
             Board nextBoard = new Board(board);
             nextBoard.pass(true);
 
-            a = Math.max(a, alphabeta(nextBoard, depth-1, a, b, false));
+            a = Math.max(a, alphabeta(nextBoard, depth-1, a, b, false, player));
 
             return a;
         }else {
             Board nextBoard = new Board(board);
             nextBoard.pass(true);
 
-            b = Math.min(b, alphabeta(nextBoard,depth-1, a, b, true));
+            b = Math.min(b, alphabeta(nextBoard,depth-1, a, b, true, player));
 
             return b;
         }
