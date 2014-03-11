@@ -30,15 +30,31 @@ public class Othello {
 
 	public static void main(String[] args){
 		Othello game = new Othello();
+		int deptHuman = 5;
+		int deptComp = 5;
 		
-		if(args.length>0){
-			if(args[0].equals("c"))
-				game.compFlag = true;
+		if(args.length==1 && args[0].equals("c")){
+			game.compFlag = true;
 		}
+		if(args.length==2) {
+			try{
+				deptHuman = Integer.parseInt(args[0]);
+				deptComp = Integer.parseInt(args[1]);
+			}catch(Exception e){System.out.println(e.toString());}
+		}
+		if(args.length==3 && args[0].equals("c")) {
+			game.compFlag = true;
+			try{
+				deptHuman = Integer.parseInt(args[1]);
+				deptComp = Integer.parseInt(args[2]);
+			}catch(Exception e){System.out.println(e.toString());}
+		}
+
+
 
 		while(!game.mainBoard.endGame()){
 			if(game.compFlag && game.mainBoard.hasTurn == game.human){
-				int[] move = game.bestMove(game.mainBoard, 6, false);
+				int[] move = game.bestMove(game.mainBoard, deptHuman, false);
 				if(move != null){
                     System.out.printf("%d, %d",move[0],move[1]);
 					game.mainBoard.put(move[0],move[1]);
@@ -50,7 +66,7 @@ public class Othello {
 			}
 			
 			if(game.mainBoard.hasTurn == game.computer){
-				int[] move = game.bestMove(game.mainBoard, 5, true);
+				int[] move = game.bestMove(game.mainBoard, deptComp, true);
 				if(move != null){
                     System.out.printf("%d, %d",move[0],move[1]);
 					game.mainBoard.put(move[0],move[1]);
@@ -100,8 +116,8 @@ public class Othello {
     private int alphabeta(Board board, int depth, int a, int b, boolean computer) {
         if(depth == 0 || board.endGame()) {
 			if(!computer)
-				return board.score(this.human);
-            return board.score(this.computer);
+				return board.score(this.computer);
+            return board.score(this.human);
         }
         
         ArrayList<int[]> nextmoves = board.legalPositions();

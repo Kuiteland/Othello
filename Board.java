@@ -174,17 +174,10 @@ public class Board extends JFrame{
 	// hieronder enkele methods voor scoring en wincondition
 	// worden nog niet gebruikt
 	public int score(char color){
-		int score = count(color);
+		int score = 0;	
 		
-		if(board[0][0] == color)
-			score += 10;
-		if(board[7][7] == color)
-			score += 10;
-		if(board[0][7] == color)
-			score += 10;
-		if(board[7][0] == color)
-			score += 10;
-		
+		score += sides(color);
+		score += corners(color);
 		score += cSquares(color);
 		score += xSquares(color);
 		
@@ -192,53 +185,90 @@ public class Board extends JFrame{
 		
 		return score;
 	}
+	private int sides(char color) {
+		int score = 0;
+		int sidevalue = 1;
+		
+		for(int i=0; i < 8; i++) {
+			if (board[i][0] == color)
+				score += sidevalue;
+			if (board[i][7] == color)
+				score += sidevalue;
+			if (board[0][i] == color)
+				score += sidevalue;
+			if (board[7][i] == color)
+				score += sidevalue;
+		}
+		
+		return score;	
+	}
+	
+	private int corners(char color) {
+		int score = 0;
+		int cornervalue = 10;
+		
+		if(board[0][0] == color)
+			score += cornervalue;
+		if(board[7][7] == color)
+			score += cornervalue;
+		if(board[0][7] == color)
+			score += cornervalue;
+		if(board[7][0] == color)
+			score += cornervalue;
+			
+		return score;
+	}
 	
 	private int cSquares(char color){
 		int score = 0;
+		int cvalue = -10;
+		
 		if(!(board[0][0] == color)){
 			if(board[0][1] == color)
-				score -= 5;
+				score += cvalue;
 			if(board[1][0] == color)
-				score -= 5;
+				score += cvalue;
 		}
 		if(!(board[0][7] == color)){
 			if(board[0][6] == color)
-				score -= 5;
+				score += cvalue;
 			if(board[1][7] == color)
-				score -= 5;
+				score += cvalue;
 		}
 		if(!(board[7][0] == color)){
 			if(board[7][1] == color)
-				score -= 5;
+				score += cvalue;
 			if(board[6][0] == color)
-				score -= 5;
+				score += cvalue;
 		}
 		if(!(board[7][7] == color)){
 			if(board[7][6] == color)
-				score -= 5;
+				score += cvalue;
 			if(board[6][7] == color)
-				score -=5;
+				score += cvalue;
 		}
 		return score;
 	}
 	
 	private int xSquares(char color){
 		int score = 0;
+		int xvalue = -10;
+		
 		if(!(board[0][0] == color)){
 			if(board[1][1] == color)
-				score -= 10;
+				score += xvalue;
 		}
 		if(!(board[7][0] == color)){
 			if(board[6][1] == color)
-				score -= 10;
+				score += xvalue;
 		}
 		if(!(board[0][7] == color)){
 			if(board[1][6] == color)
-				score -= 10;
+				score += xvalue;
 		}
 		if(!(board[7][7] == color)){
 			if(board[6][6] == color)
-				score -= 10;
+				score += xvalue;
 		}
 		return score;
 	}
