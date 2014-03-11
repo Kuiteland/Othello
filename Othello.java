@@ -54,12 +54,12 @@ public class Othello {
 			}catch(Exception e){System.out.println(e.toString());}
 		}
 
-		while(!game.mainBoard.endGame() && game.mainBoard.passes < 2){
+		while(!game.mainBoard.endGame()){
 			game.mainBoard.passes = 0;
 			if(game.compFlag && game.mainBoard.hasTurn == game.human){
 				int[] move = game.bestMove(game.mainBoard, deptHuman, game.human);
 				if(move != null){
-                    System.out.printf("%d, %d",move[0],move[1]);
+                    System.out.printf("%d,%d: ",move[0],move[1]);
 					game.mainBoard.put(move[0],move[1]);
                     try{Thread.sleep(100);}catch(Exception e){System.out.println(e.toString());}
 				}else{
@@ -71,7 +71,7 @@ public class Othello {
 			if(game.mainBoard.hasTurn == game.computer){
 				int[] move = game.bestMove(game.mainBoard, deptComp, game.computer);
 				if(move != null){
-                    System.out.printf("%d, %d",move[0],move[1]);
+                    System.out.printf("%d,%d: ",move[0],move[1]);
 					game.mainBoard.put(move[0],move[1]);
                     try{Thread.sleep(100);}catch(Exception e){System.out.println(e.toString());}
 				}else{
@@ -126,7 +126,7 @@ public class Othello {
                     nextBoard.put(nextmove);
 
                     a = Math.max(a, alphabeta(nextBoard, depth-1, a, b, false, player));
-                    if(b<a) {
+                    if(b<=a) {
                         break;
                     }
                 }
@@ -137,7 +137,7 @@ public class Othello {
                     nextBoard.put(nextmove);
 
                     b = Math.min(b, alphabeta(nextBoard,depth-1, a, b, true, player));
-                    if(b<a) {
+                    if(b<=a) {
                         break;
                     }
                 }
