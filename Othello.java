@@ -34,15 +34,14 @@ public class Othello {
 		int deptComp = 5;
 		int wait = 0;
 		
-		if(args.length==1 && args[0].equals("c")){
-			game.compFlag = true;
+		if(args.length==1){
+			if(args[0].equals("c")) {
+				game.compFlag = true;
+			}else {
+				deptComp = Integer.parseInt(args[0];
+			}
 		}
-		if(args.length==2) {
-			try{
-				deptHuman = Integer.parseInt(args[0]);
-				deptComp = Integer.parseInt(args[1]);
-			}catch(Exception e){System.out.println(e.toString());}
-		}
+
 		if(args.length==3 && args[0].equals("c")) {
 			game.compFlag = true;
 			try{
