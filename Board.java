@@ -63,7 +63,7 @@ public class Board extends JFrame{
 			System.out.println("pressed: " + row + column);
 		}
 		else if((x>= WID + SIDE/2 - WID/16 && x <WID + SIDE/2 + WID/16) && (
-				y >= 2*HI/3 && y < 2*HI/3 + WID/8)){
+				y >= 2*HI/3 && y < 2*HI/3 + WID/8) && legalPositions().size() == 0){
 			pass(true);
 		}
 		repaint();

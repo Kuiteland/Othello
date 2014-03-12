@@ -38,7 +38,7 @@ public class Othello {
 			if(args[0].equals("c")) {
 				game.compFlag = true;
 			}else {
-				deptComp = Integer.parseInt(args[0];
+				deptComp = Integer.parseInt(args[0]);
 			}
 		}
 
