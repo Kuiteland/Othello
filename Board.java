@@ -187,11 +187,30 @@ public class Board extends JFrame{
 		score += corners(color);
 		score += cSquares(color);
 		score += xSquares(color);
+		score += stable(color);
+		score += moves(color);
 		
 		if (parity == color) score++;
 		
 		return score;
 	}
+	private int moves(char color) {
+		int score = 0;
+		int n = legalPositions().size();
+		if (hasTurn == color) {
+			score += n;
+		}else {
+			score -= n;
+		}
+		
+		return score;
+	}
+	
+	private int stable(char color) {
+		int score = 0;
+		return score;
+	}
+	
 	private int sides(char color) {
 		int score = 0;
 		int sidevalue = 4;

@@ -32,6 +32,7 @@ public class Othello {
 		Othello game = new Othello();
 		int deptHuman = 5;
 		int deptComp = 5;
+		int wait = 0;
 		
 		if(args.length==1 && args[0].equals("c")){
 			game.compFlag = true;
@@ -67,7 +68,8 @@ public class Othello {
 				}
 				game.mainBoard.repaint();
 			}
-			
+			try{Thread.sleep(wait);}
+			catch(Exception e){System.out.println(e.toString());}
 			if(game.mainBoard.hasTurn == game.computer){
 				int[] move = game.bestMove(game.mainBoard, deptComp, game.computer);
 				if(move != null){
@@ -77,10 +79,9 @@ public class Othello {
 				}else{
 					game.mainBoard.pass(true);
 				}
-				game.mainBoard.repaint();
+				game.mainBoard.repaint();				
 			}
-			
-			try{Thread.sleep(100);}
+			try{Thread.sleep(wait);}
 			catch(Exception e){System.out.println(e.toString());}
 		}
 		
