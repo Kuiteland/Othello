@@ -113,9 +113,10 @@ public class Othello {
     }
 
     private int alphabeta(Board board, int depth, int a, int b, boolean computer, char player) {
-        if(depth == 0 || board.endGame()) {
-			return board.score(player);
-        }
+        if (board.endGame())
+			return 700;
+		if(depth == 0)
+			return board.score(player)-board.score(board.getAnti(player));
         
         ArrayList<int[]> nextmoves = board.legalPositions();
 		

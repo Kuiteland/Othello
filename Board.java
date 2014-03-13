@@ -185,8 +185,16 @@ public class Board extends JFrame{
 		
 		score += sides(color);
 		score += corners(color);
-		score += cSquares(color);
-		score += xSquares(color);
+		if(turn<=16) {
+			middleSquare(color);
+		}
+		if (turn<=40) {
+			score += cSquares(color);
+			score += xSquares(color);
+		}else {
+			score += 0.5*cSquares(color);
+			score += 0.5*xSquares(color);
+		}
 		score += stable(color);
 		score += moves(color);
 		
@@ -194,6 +202,12 @@ public class Board extends JFrame{
 		
 		return score;
 	}
+	
+	private int middleSquare(char color) {
+		score = 0;
+		return score;
+	}
+	
 	private int moves(char color) {
 		int score = 0;
 		int n = legalPositions().size();
