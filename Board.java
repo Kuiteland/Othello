@@ -204,7 +204,7 @@ public class Board extends JFrame{
 	}
 	
 	private int middleSquare(char color) {
-		score = 0;
+		int score = 0;
 		return score;
 	}
 	
