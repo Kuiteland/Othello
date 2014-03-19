@@ -55,7 +55,9 @@ public class Othello {
 			if(args[0].equals("c")) {
 				game.compFlag = true;
 			}else {
+				try{
 				deptComp = Integer.parseInt(args[0]);
+				}catch(Exception e){System.out.println(e.toString());}
 			}
 		}
 
