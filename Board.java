@@ -7,19 +7,29 @@ import java.io.*;
 import java.lang.Math;
 import java.util.*;
 
+/* Het Board object bevat 2 gedeeltes over een othello bord
+ * een aantal methodes en velden om bewerkingen op het bord 
+ * te doen en info over het spel
+ * het andere gedeelte creert een GUI voor hte bord en handelt
+ * input van de user af.
+ */
 public class Board extends JFrame{
 
+	//vaste waardes voor dimensies van de GUI en het bord
 	private static final int HI = 430;
 	private static final int WID = 400;
 	private static final int SIDE = 100;
 	private static final int ROWS = 8;
 	private static final int COL = 8;
+	
+	//waardes die info over het spel bevatten
 	private char parity;
 	int passes;
 	char hasTurn;
 	char noTurn;
 	int turn;
 	
+	//het bord wordt gerepresenteerd als een matrix
 	public char[][] board = new char[ROWS][COL];
 
 	// twee constructors
@@ -38,6 +48,7 @@ public class Board extends JFrame{
 		noTurn = 'w';
 		turn = 1;
 	}
+	
 	// contructor voor enkel de informatie van een board
 	// kopieert de info van een gegeven board
 	public Board(Board inBoard){
@@ -54,6 +65,9 @@ public class Board extends JFrame{
 		}
 	}
 	
+	// methode die een muisklik in het scherm afhandeld
+	// klikken op het bord zijn om een zet te doen
+	// klikken in het gebied van het rode vlak doen een pass
 	public void mouseClick(int x, int y){
 		if(hasTurn == 'b');
 		if(x < WID){
@@ -68,10 +82,15 @@ public class Board extends JFrame{
 		}
 		repaint();
 	}
+	
+	// methode die een zet op het bord omzet naar coordinaten
+	// en doorgeeft naar de volgende pass methode
 	public void put(int[] move){
 		put(move[0],move[1]);
 	}
 	
+	//methode die checked of een zet legaal is en dan de zet doet
+	// vervolgens wordt pass aangeroepen om naar de volgende zet te gaan
 	public void put(int row, int column){
 		if(legalMove(row, column, hasTurn)){
 			board[row][column] = hasTurn;
@@ -79,6 +98,9 @@ public class Board extends JFrame{
 			pass();
 		}
 	}
+	
+	// pass methode die de parity flipt als er daadwerkelijk in het spel gepassed word
+	// vervolgens word de pass om de beurt te flippen aangeroepen
 	public void pass(boolean b){
 		if (b==true){
 			flipParity();
@@ -87,6 +109,7 @@ public class Board extends JFrame{
 		pass();
 	}
 	
+	// deze methode zet alle waarden goed voor de volgende beurt en draait de beurt om
 	public void pass(){
 		char placeholder;
 		placeholder = hasTurn;
@@ -94,11 +117,11 @@ public class Board extends JFrame{
 		noTurn = placeholder;
 		turn++;
 	}
+	
 	/*
 	De methods om een legal move te vinden + de bijbehorende check next
 	deze lijken erg op updateBoard en updateNext
-	*/
-	
+	*/	
 	public boolean legalMove(int row, int column, char turn){
 		if(!(board[row][column] == '\u0000'))
 			return false;
@@ -110,6 +133,7 @@ public class Board extends JFrame{
 		}
 		return false;
 	}
+	
 	// werkt recursief alle posities op directies vanaf een bepaald punt af
 	public boolean checkNext(int row, int i, int column, int j,
 										char turn, boolean flag){
@@ -130,6 +154,7 @@ public class Board extends JFrame{
 		}
 	}
 	
+	// update de bord matrix
 	public void updateBoard(int row, int column, char turn){
 		for(int i = -1;i<2;i++){
 			for(int j = -1;j<2;j++){
@@ -138,6 +163,7 @@ public class Board extends JFrame{
 		}
 	}
 
+	// update elk vakje in de bord matrix om te kijken of deze na een zet gedraaid wordt
 	public boolean updateNext(int row, int i, int column, int j,
 										char turn, boolean flag){
 		row += i;
@@ -163,6 +189,8 @@ public class Board extends JFrame{
 		}
 	}
 	
+	// zoekt de mogelijke zetten op het bord voor de speler die aan zet is
+	// geeft deze terug in een arraylist
 	public ArrayList<int[]> legalPositions(){
 		ArrayList<int[]> positions = new ArrayList<int[]>();
 		for(int i = 0;i<COL;i++){
@@ -174,6 +202,8 @@ public class Board extends JFrame{
 		return positions;
 	}
 	
+	// zet de parity van het spel om
+	// ofwel de andere speler krijgt het voordeel
 	public void flipParity() {
 		parity = getAnti(parity);
 	}
@@ -185,9 +215,11 @@ public class Board extends JFrame{
 		
 		score += sides(color);
 		score += corners(color);
+		//deze score is alleen in het begin van het spel belangrijk
 		if(turn<=16) {
 			middleSquare(color);
 		}
+		//deze score is minder belangrijk aan het einde van het spel
 		if (turn<=40) {
 			score += cSquares(color);
 			score += xSquares(color);
@@ -203,11 +235,13 @@ public class Board extends JFrame{
 		return score;
 	}
 	
+	// posities op het midden van het bord zijn een betere score
 	private int middleSquare(char color) {
 		int score = 0;
 		return score;
 	}
 	
+	// meer zetten is een betere score
 	private int moves(char color) {
 		int score = 0;
 		int n = legalPositions().size();
@@ -220,11 +254,14 @@ public class Board extends JFrame{
 		return score;
 	}
 	
+	// methode die het aantal stable discs telt en daar een score aan geeft
 	private int stable(char color) {
 		int score = 0;
 		return score;
 	}
 	
+	// telt het aantal zijvlakken die de speler in bezit heeft en geeft hier
+	// een score voor
 	private int sides(char color) {
 		int score = 0;
 		int sidevalue = 4;
@@ -243,6 +280,7 @@ public class Board extends JFrame{
 		return score;	
 	}
 	
+	//telt de hoeken die de speler heeft en geeft hier een score voor
 	private int corners(char color) {
 		int score = 0;
 		int cornervalue = 20;
@@ -259,6 +297,8 @@ public class Board extends JFrame{
 		return score;
 	}
 	
+	//telt de vlakken recht naast de hoeken die de speler heeft 
+	// en geeft hier een negatieve score aan
 	private int cSquares(char color){
 		int score = 0;
 		int cvalue = -5;
@@ -290,6 +330,8 @@ public class Board extends JFrame{
 		return score;
 	}
 	
+	//telt de vlakken schuin naast de hoeken die de speler heeft 
+	// en geeft hier een negatieve score aan
 	private int xSquares(char color){
 		int score = 0;
 		int xvalue = -5;
@@ -313,7 +355,7 @@ public class Board extends JFrame{
 		return score;
 	}
 			
-	
+	//telt het aantal stenen die de speler heeft
 	public int count(char color){
 		int count = 0;
 		for(int i = 0;i<COL;i++){
@@ -325,6 +367,7 @@ public class Board extends JFrame{
 		return count;
 	}
 	
+	// checked of er een winsituatie is
 	public boolean win(char color){
 		char anti = getAnti(color);
 		int count1 = count(color);
@@ -336,6 +379,7 @@ public class Board extends JFrame{
 		return false;
 	}
 	
+	// checked of er een eindspelsituatie is
 	public boolean endGame(){
 		if(passes == 2 || win(hasTurn) || win(noTurn)){
 			return true;
@@ -343,12 +387,14 @@ public class Board extends JFrame{
 		return false;
 	}
 	
+	// geeft de tegengestelde kleur
 	public char getAnti(char color){
 		if(color == hasTurn)
 			return noTurn;
 		else
 			return hasTurn;
 	}
+	
 	// paint het hele boord met informatie uit het character array
 	public void paint(Graphics g){
 		super.paint(g);
@@ -399,6 +445,7 @@ public class Board extends JFrame{
 		}
 		g.setColor(Color.BLACK);
 	}
+	
 	// mouse adapter haalt de x en y coördinaten van een klik
 	public class Mouse extends MouseAdapter {
 		@Override
